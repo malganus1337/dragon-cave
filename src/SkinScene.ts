@@ -1,59 +1,95 @@
-import Phaser from 'phaser';
-import { playerData, saveGame } from './playerData';
+import Phaser from "phaser";
+import { playerData, saveGame } from "./playerData";
 
 export class SkinScene extends Phaser.Scene {
-    constructor() {
-        super('SkinScene');
-    }
+  constructor() {
+    super("SkinScene");
+  }
 
-    create() {
-        this.add.rectangle(400, 300, 800, 600, 0x222222);
-        
-        this.add.text(400, 40, 'МАГАЗИН СКИНОВ', { fontSize: '32px', color: '#ffd700', fontStyle: 'bold' }).setOrigin(0.5);
-        this.add.text(400, 80, 'Ваши Яйца: ' + playerData.totalEggs, { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5);
+  create() {
+    this.add.rectangle(400, 300, 800, 600, 0x222222);
 
-        let skins = [
-            { id: '🏃', name: 'Бегун', price: 0 },
-            { id: '🥷', name: 'Ниндзя', price: 5 },
-            { id: '🧙', name: 'Маг', price: 15 },
-            { id: '🏴‍☠️', name: 'Пират', price: 30 }
-        ];
+    this.add
+      .text(400, 40, "МАГАЗИН СКИНОВ", {
+        fontSize: "32px",
+        color: "#ffd700",
+        fontStyle: "bold",
+      })
+      .setOrigin(0.5);
+    this.add
+      .text(400, 80, "Ваши Яйца: " + playerData.totalEggs, {
+        fontSize: "24px",
+        color: "#ffffff",
+      })
+      .setOrigin(0.5);
 
-        let startY = 150;
-        
-        skins.forEach((skin, index) => {
-            let y = startY + (index * 80);
-            
-            this.add.rectangle(400, y, 500, 70, 0x333333).setStrokeStyle(2, 0x555555);
-            this.add.text(180, y, skin.id, { fontSize: '40px' }).setOrigin(0.5);
-            this.add.text(250, y, skin.name, { fontSize: '22px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0, 0.5);
-            
-            if (playerData.equippedSkin === skin.id) {
-                this.add.text(550, y, 'НАДЕТО', { fontSize: '20px', color: '#00ff00', fontStyle: 'bold' }).setOrigin(0.5);
-            } else {
-                let btnText = skin.price === 0 ? 'ВЫБРАТЬ' : 'КУПИТЬ: ' + skin.price + ' 🥚';
-                let btn = this.add.rectangle(550, y, 150, 40, 0x005500).setInteractive({useHandCursor: true});
-                this.add.text(550, y, btnText, { fontSize: '16px', color: '#ffffff' }).setOrigin(0.5);
-                
-                btn.on('pointerdown', () => {
-                    if (skin.price === 0) {
-                        playerData.equippedSkin = skin.id;
-                        saveGame();
-                        this.scene.restart();
-                    } else if (playerData.totalEggs >= skin.price) {
-                        playerData.totalEggs -= skin.price;
-                        playerData.equippedSkin = skin.id;
-                        saveGame();
-                        this.scene.restart();
-                    }
-                });
-            }
+    let skins = [
+      { id: "🏃", name: "Бегун", price: 0 },
+      { id: "🥷", name: "Ниндзя", price: 5 },
+      { id: "🧙", name: "Маг", price: 15 },
+      { id: "🏴‍☠️", name: "Пират", price: 30 },
+    ];
+
+    let startY = 150;
+
+    skins.forEach((skin, index) => {
+      let y = startY + index * 80;
+
+      this.add.rectangle(400, y, 500, 70, 0x333333).setStrokeStyle(2, 0x555555);
+      this.add.text(180, y, skin.id, { fontSize: "40px" }).setOrigin(0.5);
+      this.add
+        .text(250, y, skin.name, {
+          fontSize: "22px",
+          color: "#ffffff",
+          fontStyle: "bold",
+        })
+        .setOrigin(0, 0.5);
+
+      if (playerData.equippedSkin === skin.id) {
+        this.add
+          .text(550, y, "НАДЕТО", {
+            fontSize: "20px",
+            color: "#00ff00",
+            fontStyle: "bold",
+          })
+          .setOrigin(0.5);
+      } else {
+        let btnText =
+          skin.price === 0 ? "ВЫБРАТЬ" : "КУПИТЬ: " + skin.price + " 🥚";
+        let btn = this.add
+          .rectangle(550, y, 150, 40, 0x005500)
+          .setInteractive({ useHandCursor: true });
+        this.add
+          .text(550, y, btnText, { fontSize: "16px", color: "#ffffff" })
+          .setOrigin(0.5);
+
+        btn.on("pointerdown", () => {
+          if (skin.price === 0) {
+            playerData.equippedSkin = skin.id;
+            saveGame();
+            this.scene.restart();
+          } else if (playerData.totalEggs >= skin.price) {
+            playerData.totalEggs -= skin.price;
+            playerData.equippedSkin = skin.id;
+            saveGame();
+            this.scene.restart();
+          }
         });
+      }
+    });
 
-        let backBtn = this.add.rectangle(400, 520, 200, 50, 0x444444).setInteractive({useHandCursor: true});
-        this.add.text(400, 520, 'НАЗАД НА БАЗУ', { fontSize: '18px', color: '#ffffff', fontStyle: 'bold' }).setOrigin(0.5);
-        backBtn.on('pointerdown', () => {
-            this.scene.start('MenuScene');
-        });
-    }
+    let backBtn = this.add
+      .rectangle(400, 520, 200, 50, 0x444444)
+      .setInteractive({ useHandCursor: true });
+    this.add
+      .text(400, 520, "НАЗАД НА БАЗУ", {
+        fontSize: "18px",
+        color: "#ffffff",
+        fontStyle: "bold",
+      })
+      .setOrigin(0.5);
+    backBtn.on("pointerdown", () => {
+      this.scene.start("MenuScene");
+    });
+  }
 }
