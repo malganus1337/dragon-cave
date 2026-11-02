@@ -45,7 +45,11 @@ export class SkinScene extends Phaser.Scene {
         })
         .setOrigin(0, 0.5);
 
-      if (playerData.equippedSkin === skin.id) {
+      let isUnlocked = playerData.unlockedSkins.includes(skin.id);
+      let isEquipped = playerData.equippedSkin === skin.id;
+
+      if (isEquipped) {
+        // Уже надет
         this.add
           .text(550, y, "НАДЕТО", {
             fontSize: "20px",
@@ -53,23 +57,34 @@ export class SkinScene extends Phaser.Scene {
             fontStyle: "bold",
           })
           .setOrigin(0.5);
-      } else {
-        let btnText =
-          skin.price === 0 ? "ВЫБРАТЬ" : "КУПИТЬ: " + skin.price + " 🥚";
+      } else if (isUnlocked) {
+        // Куплен, но не надет - можно просто выбрать
         let btn = this.add
           .rectangle(550, y, 150, 40, 0x005500)
+          .setInteractive({ useHandCursor: true });
+        this.add
+          .text(550, y, "ВЫБРАТЬ", { fontSize: "16px", color: "#ffffff" })
+          .setOrigin(0.5);
+        btn.on("pointerdown", () => {
+          playerData.equippedSkin = skin.id;
+          saveGame();
+          this.scene.restart();
+        });
+      } else {
+        // Не куплен
+        let btnText =
+          skin.price === 0 ? "БЕСПЛАТНО" : "КУПИТЬ: " + skin.price + " 🥚";
+        let btn = this.add
+          .rectangle(550, y, 150, 40, 0x444444)
           .setInteractive({ useHandCursor: true });
         this.add
           .text(550, y, btnText, { fontSize: "16px", color: "#ffffff" })
           .setOrigin(0.5);
 
         btn.on("pointerdown", () => {
-          if (skin.price === 0) {
-            playerData.equippedSkin = skin.id;
-            saveGame();
-            this.scene.restart();
-          } else if (playerData.totalEggs >= skin.price) {
+          if (skin.price === 0 || playerData.totalEggs >= skin.price) {
             playerData.totalEggs -= skin.price;
+            playerData.unlockedSkins.push(skin.id); // ДОБАВЛЯЕМ В КУПЛЕННЫЕ
             playerData.equippedSkin = skin.id;
             saveGame();
             this.scene.restart();
@@ -82,7 +97,7 @@ export class SkinScene extends Phaser.Scene {
       .rectangle(400, 520, 200, 50, 0x444444)
       .setInteractive({ useHandCursor: true });
     this.add
-      .text(400, 520, "НАЗАД НА БАЗУ", {
+      .text(400, 520, "НАЗАД", {
         fontSize: "18px",
         color: "#ffffff",
         fontStyle: "bold",

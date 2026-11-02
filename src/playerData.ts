@@ -5,6 +5,7 @@ export let playerData = {
   upgradeSpeedLevel: 0,
   upgradeZoneLevel: 0,
 
+  unlockedSkins: ["🏃"],
   currentCaveLevel: 1, // В какую пещеру идем сейчас
   maxCaveLevel: 1, // Самая глубокая открытая пещера
   equippedSkin: "🏃", // Текущий скин (по умолчанию бегун)
@@ -25,7 +26,7 @@ export function loadGame() {
     playerData.equippedSkin = data.equippedSkin || "🏃";
     playerData.currentCaveLevel = data.currentCaveLevel || 1;
     playerData.runsCompleted = data.runsCompleted || 0;
-
+    playerData.unlockedSkins = data.unlockedSkins || ["🏃"];
     playerData.maxCaveLevel = data.maxCaveLevel || 1;
 
     playerData.hasAegis = data.hasAegis || false;
