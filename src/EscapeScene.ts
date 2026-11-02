@@ -619,7 +619,7 @@ export class EscapeScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
     quitBtn.on("pointerdown", () => {
-      this.scene.start("ShopScene");
+      this.scene.start("MenuScene");
     });
 
     this.deathGroup = [bg, t1, t2, t3, adBtn, adTxt, quitBtn, quitTxt];
@@ -662,7 +662,7 @@ export class EscapeScene extends Phaser.Scene {
   }
 
   surrender() {
-    this.scene.start("ShopScene");
+    this.scene.start("MenuScene");
   }
 
   showPauseMenu() {

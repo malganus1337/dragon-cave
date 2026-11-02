@@ -312,7 +312,7 @@ export class CaveScene extends Phaser.Scene {
         })
         .setOrigin(0.5);
       this.time.delayedCall(2500, () => {
-        this.scene.start("ShopScene");
+        this.scene.start("MenuScene");
       });
     }
   }
