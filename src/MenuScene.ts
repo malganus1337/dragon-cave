@@ -98,6 +98,8 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
     tutBtn.on("pointerdown", () => {
+      tutBtn.disableInteractive(); // Отключаем кнопку
+
       let tutBg = this.add
         .rectangle(400, 300, 700, 500, 0x000000, 0.9)
         .setDepth(50)
@@ -106,7 +108,14 @@ export class MenuScene extends Phaser.Scene {
         .text(
           400,
           300,
-          "УПРАВЛЕНИЕ:\n\nСТЕЛС: Жми в зеленой зоне.\n\nБЕГ:\n⬆️ ВВЕРХ - Прыжок\n⬇️ ВНИЗ - Подкат\n🛡️ ЩИТ - Защита от огня\n\nНажми, чтобы закрыть",
+          "УПРАВЛЕНИЕ:\n\n" +
+            "СТЕЛС: Жми в зеленой зоне, чтобы не шуметь.\n\n" +
+            "БЕГ: \n" +
+            "⬆️ ВВЕРХ - Прыжок\n" +
+            "⬇️ ВНИЗ - Подкат\n" +
+            "🛡️ ЩИТ - Тап по экрану или Пробел\n\n" +
+            "Собирай золото 💰 и яйца 🥚!\n\n" +
+            "Нажми, чтобы закрыть",
           {
             fontSize: "20px",
             color: "#ffffff",
@@ -116,9 +125,11 @@ export class MenuScene extends Phaser.Scene {
         )
         .setOrigin(0.5)
         .setDepth(50);
+
       tutBg.on("pointerdown", () => {
         tutBg.destroy();
         tutText.destroy();
+        tutBtn.setInteractive(); // Включаем кнопку обратно
       });
     });
 
@@ -128,6 +139,8 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
     creditsBtn.on("pointerdown", () => {
+      creditsBtn.disableInteractive(); // Отключаем кнопку, пока открыто окно
+
       let credBg = this.add
         .rectangle(400, 300, 700, 400, 0x000000, 0.9)
         .setDepth(50)
@@ -146,9 +159,11 @@ export class MenuScene extends Phaser.Scene {
         )
         .setOrigin(0.5)
         .setDepth(50);
+
       credBg.on("pointerdown", () => {
         credBg.destroy();
         credText.destroy();
+        creditsBtn.setInteractive(); // Включаем кнопку обратно, когда окно закрыто
       });
     });
   }
