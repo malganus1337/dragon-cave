@@ -6,6 +6,11 @@ export class MenuScene extends Phaser.Scene {
     super("MenuScene");
   }
 
+  preload() {
+    this.load.image("btn", "/btn.png");
+    this.load.audio("click", "/click.mp3");
+  }
+
   create() {
     // Фон пещеры
     this.add.rectangle(400, 300, 800, 600, 0x1a1a1a);
@@ -104,18 +109,32 @@ export class MenuScene extends Phaser.Scene {
         .rectangle(400, 300, 700, 500, 0x000000, 0.9)
         .setDepth(50)
         .setInteractive();
+      let isMobile = this.sys.game.device.input.touch;
+      let tutContent = isMobile
+        ? "УПРАВЛЕНИЕ (Телефон):\n\n" +
+          "⬆️ СВАЙП ВВЕРХ - Прыжок\n" +
+          "⬇️ СВАЙП ВНИЗ - Подкат\n" +
+          "🛡️ ТАП ПО ЭКРАНУ - Щит (во время атаки огнем)\n\n" +
+          "Следи за подсказками:\n" +
+          "🔥 - Жми щит\n" +
+          "⬇️ - Делай подкат\n" +
+          "⬆️ - Прыгай\n\n" +
+          "Собирай золото 💰!"
+        : "УПРАВЛЕНИЕ (ПК):\n\n" +
+          "⬆️ СТРЕЛКА ВВЕРХ - Прыжок\n" +
+          "⬇️ СТРЕЛКА ВНИЗ - Подкат\n" +
+          "🛡️ ПРОБЕЛ - Щит (во время атаки огнем)\n\n" +
+          "Следи за подсказками:\n" +
+          "🔥 - Жми щит\n" +
+          "⬇️ - Делай подкат\n" +
+          "⬆️ - Прыгай\n\n" +
+          "Собирай золото 💰!";
+
       let tutText = this.add
         .text(
           400,
           300,
-          "УПРАВЛЕНИЕ:\n\n" +
-            "СТЕЛС: Жми в зеленой зоне, чтобы не шуметь.\n\n" +
-            "БЕГ: \n" +
-            "⬆️ ВВЕРХ - Прыжок\n" +
-            "⬇️ ВНИЗ - Подкат\n" +
-            "🛡️ ЩИТ - Тап по экрану или Пробел\n\n" +
-            "Собирай золото 💰 и яйца 🥚!\n\n" +
-            "Нажми, чтобы закрыть",
+          tutContent,
           {
             fontSize: "20px",
             color: "#ffffff",

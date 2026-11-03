@@ -8,6 +8,11 @@ export class ShopScene extends Phaser.Scene {
     super("ShopScene");
   }
 
+  preload() {
+    this.load.image("btn", "/btn.png");
+    this.load.audio("click", "/click.mp3");
+  }
+
   create() {
     this.isSpinning = false;
     this.add.rectangle(400, 300, 800, 600, 0x222222);

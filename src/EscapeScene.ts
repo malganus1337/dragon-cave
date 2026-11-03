@@ -92,7 +92,7 @@ export class EscapeScene extends Phaser.Scene {
     this.bgRect.setScale(bgScale);
 
     // Пол (полупрозрачный), цвет меняется по биомам
-    this.floorRect = this.add.rectangle(400, 525, 800, 150, 0x333333).setDepth(0);
+    this.floorRect = this.add.rectangle(400, 525, 800, 150, 0x333333).setDepth(0).setAlpha(0.3);
 
     this.player = this.add
       .text(200, 450, playerData.equippedSkin, { fontSize: "50px" })
@@ -171,7 +171,7 @@ export class EscapeScene extends Phaser.Scene {
         } else {
           if (!this.isJumping && !this.isSliding) {
             this.isSliding = true;
-            this.slideTimer = 700;
+            this.slideTimer = 800;
             this.player.setScale(1, 0.5);
             this.player.y = 465;
           }
@@ -209,7 +209,7 @@ export class EscapeScene extends Phaser.Scene {
       if (event.code === "ArrowDown" || event.code === "KeyS") {
         if (!this.isJumping && !this.isSliding) {
           this.isSliding = true;
-          this.slideTimer = 700;
+          this.slideTimer = 800;
           this.player.setScale(1, 0.5);
           this.player.y = 465;
         }
@@ -252,11 +252,11 @@ export class EscapeScene extends Phaser.Scene {
     if (newBiome !== this.currentBiome && newBiome <= 4) {
       this.currentBiome = newBiome;
       if (this.currentBiome === 2) {
-        this.floorRect.setFillStyle(0x550000);
+        this.floorRect.setFillStyle(0x550000, 0.3);
       } else if (this.currentBiome === 3) {
-        this.floorRect.setFillStyle(0x002255);
+        this.floorRect.setFillStyle(0x002255, 0.3);
       } else if (this.currentBiome === 4) {
-        this.floorRect.setFillStyle(0x1a1a1a);
+        this.floorRect.setFillStyle(0x1a1a1a, 0.3);
       }
     }
 
@@ -395,16 +395,16 @@ export class EscapeScene extends Phaser.Scene {
     if (attackType === 1) {
       this.canShield = true;
       this.warningText.setText("🔥");
-      this.hintText.setText("ТАП / ПРОБЕЛ");
+      this.hintText.setText("ДРАКОН АТАКУЕТ!");
 
       this.tweens.add({
         targets: this.warningText,
         scale: 1.5,
-        duration: 1500,
+        duration: 1200,
       });
 
-      this.time.delayedCall(1500, () => {
-        this.hintText.setText("ЖМИ СЕЙЧАС!").setColor("#ff0000");
+      this.time.delayedCall(800, () => {
+        this.hintText.setText("ЖМИ ЩИТ!").setColor("#ff0000");
         this.cameras.main.shake(200, 0.02);
 
         this.time.delayedCall(400, () => {
@@ -426,17 +426,17 @@ export class EscapeScene extends Phaser.Scene {
       });
     } else if (attackType === 2) {
       this.warningText.setText("⬇️");
-      this.hintText.setText("СВАЙП ВНИЗ");
+      this.hintText.setText("ДРАКОН АТАКУЕТ!");
 
       this.tweens.add({
         targets: this.warningText,
         scale: 1.5,
-        duration: 1500,
+        duration: 1200,
       });
       this.tweens.add({ targets: this.dragonSprite, y: 380, duration: 1200 });
 
-      this.time.delayedCall(1500, () => {
-        this.hintText.setText("СЕЙЧАС!").setColor("#ff0000");
+      this.time.delayedCall(800, () => {
+        this.hintText.setText("ДЕЛАЙ ПОДКАТ!").setColor("#ff0000");
         this.cameras.main.shake(200, 0.02);
 
         this.time.delayedCall(400, () => {
@@ -464,16 +464,16 @@ export class EscapeScene extends Phaser.Scene {
       });
     } else {
       this.warningText.setText("⬆️");
-      this.hintText.setText("СВАЙП ВВЕРХ");
+      this.hintText.setText("ДРАКОН АТАКУЕТ!");
 
       this.tweens.add({
         targets: this.warningText,
         scale: 1.5,
-        duration: 1500,
+        duration: 1200,
       });
 
-      this.time.delayedCall(1500, () => {
-        this.hintText.setText("СЕЙЧАС!").setColor("#ff0000");
+      this.time.delayedCall(800, () => {
+        this.hintText.setText("ПРЫГАЙ!").setColor("#ff0000");
         this.cameras.main.shake(200, 0.02);
 
         this.time.delayedCall(400, () => {
