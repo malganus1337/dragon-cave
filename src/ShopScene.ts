@@ -82,7 +82,7 @@ export class ShopScene extends Phaser.Scene {
     this.createButton(
       400,
       325,
-      "Рука Мидаса (x3)",
+      "Рука Мидаса (x2)",
       playerData.hasMidasHand ? "КУПЛЕНО" : "Цена: 800",
       200,
       () => {
@@ -179,7 +179,7 @@ export class ShopScene extends Phaser.Scene {
       winType = "Сапоги";
     } else {
       playerData.hasMidasHand = true;
-      winType = "Рука Мидаса";
+      winType = "Рука";
     }
     saveGame();
 

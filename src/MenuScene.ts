@@ -81,7 +81,7 @@ export class MenuScene extends Phaser.Scene {
         alpha: 1,
         duration: 400,
         onComplete: () => {
-          this.scene.start("CaveScene");
+          this.scene.start("EscapeScene", { stolenGold: 0 });
         },
       });
     });

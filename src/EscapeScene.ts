@@ -2,13 +2,13 @@ import Phaser from "phaser";
 import { playerData, saveGame } from "./playerData";
 
 export class EscapeScene extends Phaser.Scene {
+  private bgRect!: Phaser.GameObjects.Image;
   private player!: Phaser.GameObjects.Text;
   private shieldSprite!: Phaser.GameObjects.Text;
   private dragonSprite!: Phaser.GameObjects.Text;
   private obstacles: Phaser.GameObjects.Text[] = [];
   private coins: Phaser.GameObjects.Text[] = [];
 
-  private bgRect!: Phaser.GameObjects.Rectangle;
   private floorRect!: Phaser.GameObjects.Rectangle;
   private currentBiome = 1;
 
@@ -55,11 +55,13 @@ export class EscapeScene extends Phaser.Scene {
     super("EscapeScene");
   }
 
-  init(data: { stolenGold: number }) {
-    this.stolenGold = data.stolenGold || 0;
+  preload() {
+    // Загружаем картинку, которую ты закинул в папку public
+    this.load.image("bg_cave", "/bg_cave.jpg");
   }
 
   create() {
+    this.input.keyboard!.addCapture("SPACE,UP,DOWN,LEFT,RIGHT,W,A,S,D,P");
     this.isGameOver = false;
     this.isPaused = false;
     this.velocityY = 0;
@@ -81,22 +83,16 @@ export class EscapeScene extends Phaser.Scene {
     this.maxHealth = playerData.hasAchillesShield ? 6 : 3;
     this.health = this.maxHealth;
 
-    let bgColor = 0x1a1a1a;
-    let floorColor = 0x2d2d2d;
+    // Загружаем картинку пещеры
+    // Cover-scale (Вариант 1): фон полностью заполняет 800x600, сохраняя пропорции
+    const bgImg = this.textures.get("bg_cave").getSourceImage() as HTMLImageElement;
+    const bgScale = Math.max(800 / bgImg.width, 600 / bgImg.height);
+    this.bgRect = this.add.image(400, 300, "bg_cave");
+    this.bgRect.setOrigin(0.5);
+    this.bgRect.setScale(bgScale);
 
-    if (playerData.currentCaveLevel === 2) {
-      bgColor = 0x330000;
-      floorColor = 0x550000;
-    } else if (playerData.currentCaveLevel === 3) {
-      bgColor = 0x001133;
-      floorColor = 0x002255;
-    } else if (playerData.currentCaveLevel >= 4) {
-      bgColor = 0x1a0033;
-      floorColor = 0x2d0055;
-    }
-
-    this.bgRect = this.add.rectangle(400, 300, 800, 600, bgColor);
-    this.floorRect = this.add.rectangle(400, 520, 800, 160, floorColor);
+    // Пол (полупрозрачный), цвет меняется по биомам
+    this.floorRect = this.add.rectangle(400, 525, 800, 150, 0x333333).setDepth(0);
 
     this.player = this.add
       .text(200, 450, playerData.equippedSkin, { fontSize: "50px" })
@@ -247,24 +243,20 @@ export class EscapeScene extends Phaser.Scene {
     }
 
     this.gameSpeed += 0.5 * (delta / 1000);
-    this.distance += this.gameSpeed * 0.1 * (delta / 1000);
+    let distanceGain = this.gameSpeed * 0.1 * (delta / 1000);
+    if (playerData.hermesBootsActive) distanceGain *= 1.5;
+    this.distance += distanceGain;
     this.distanceText.setText("Дистанция: " + Math.floor(this.distance) + " м");
 
     let newBiome = Math.floor(this.distance / 1000) + 1;
     if (newBiome !== this.currentBiome && newBiome <= 4) {
       this.currentBiome = newBiome;
       if (this.currentBiome === 2) {
-        this.bgRect.setFillStyle(0x330000);
         this.floorRect.setFillStyle(0x550000);
-        this.dragonSprite.setText("🐉");
       } else if (this.currentBiome === 3) {
-        this.bgRect.setFillStyle(0x001133);
         this.floorRect.setFillStyle(0x002255);
-        this.dragonSprite.setText("🐲");
       } else if (this.currentBiome === 4) {
-        this.bgRect.setFillStyle(0x0a0a0a);
         this.floorRect.setFillStyle(0x1a1a1a);
-        this.dragonSprite.setText("🐍");
       }
     }
 
@@ -568,7 +560,6 @@ export class EscapeScene extends Phaser.Scene {
     let finalGold = this.stolenGold;
     if (playerData.hasMidasHand) {
       finalGold = Math.floor(finalGold * 2);
-      playerData.hasMidasHand = false;
     }
     playerData.totalGold += finalGold;
     saveGame();

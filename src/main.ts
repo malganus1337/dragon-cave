@@ -1,6 +1,5 @@
 import { MenuScene } from "./MenuScene";
 import Phaser from "phaser";
-import { CaveScene } from "./CaveScene";
 import { EscapeScene } from "./EscapeScene";
 import { ShopScene } from "./ShopScene";
 import { loadGame } from "./playerData"; // Импортируем функцию загрузки
@@ -24,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   // Подключаем наши модули
-  scene: [MenuScene, ShopScene, SkinScene, CaveScene, EscapeScene],
+  scene: [MenuScene, ShopScene, SkinScene, EscapeScene],
 };
 
 new Phaser.Game(config);

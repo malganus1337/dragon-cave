@@ -32,7 +32,7 @@ export function loadGame() {
     playerData.hasAegis = data.hasAegis || false;
     playerData.hasAchillesShield = data.hasAchillesShield || false;
     playerData.hasMidasHand = data.hasMidasHand || false;
-    playerData.hermesBootsActive = false;
+    playerData.hermesBootsActive = data.hermesBootsActive || false;
   }
 }
 
