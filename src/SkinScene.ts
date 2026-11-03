@@ -65,7 +65,8 @@ export class SkinScene extends Phaser.Scene {
       } else if (isUnlocked) {
         // Куплен, но не надет - можно просто выбрать
         let btn = this.add
-          .rectangle(550, y, 150, 40, 0x005500)
+          .image(550, y, "btn")
+          .setDisplaySize(150, 40)
           .setInteractive({ useHandCursor: true });
         this.add
           .text(550, y, "ВЫБРАТЬ", { fontSize: "16px", color: "#ffffff" })
@@ -80,7 +81,8 @@ export class SkinScene extends Phaser.Scene {
         let btnText =
           skin.price === 0 ? "БЕСПЛАТНО" : "КУПИТЬ: " + skin.price + " 🥚";
         let btn = this.add
-          .rectangle(550, y, 150, 40, 0x444444)
+          .image(550, y, "btn")
+          .setDisplaySize(150, 40)
           .setInteractive({ useHandCursor: true });
         this.add
           .text(550, y, btnText, { fontSize: "16px", color: "#ffffff" })
@@ -99,7 +101,8 @@ export class SkinScene extends Phaser.Scene {
     });
 
     let backBtn = this.add
-      .rectangle(400, 520, 200, 50, 0x444444)
+      .image(400, 520, "btn")
+      .setDisplaySize(200, 50)
       .setInteractive({ useHandCursor: true });
     this.add
       .text(400, 520, "НАЗАД", {

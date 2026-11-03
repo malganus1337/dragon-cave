@@ -64,7 +64,8 @@ export class MenuScene extends Phaser.Scene {
 
     // --- БОЛЬШАЯ КНОПКА ВХОДА ---
     let playBtnBg = this.add
-      .rectangle(400, 380, 300, 70, 0x00aa00)
+      .image(400, 380, "btn")
+      .setDisplaySize(300, 70)
       .setInteractive({ useHandCursor: true });
     this.add
       .text(400, 380, "ВОЙТИ В ПЕЩЕРУ", {
@@ -74,8 +75,8 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    playBtnBg.on("pointerover", () => playBtnBg.setFillStyle(0x00cc00));
-    playBtnBg.on("pointerout", () => playBtnBg.setFillStyle(0x00aa00));
+    playBtnBg.on("pointerover", () => playBtnBg.setTint(0xdddddd));
+    playBtnBg.on("pointerout", () => playBtnBg.clearTint());
 
     playBtnBg.on("pointerdown", () => {
       let blackout = this.add

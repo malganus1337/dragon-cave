@@ -259,7 +259,8 @@ export class ShopScene extends Phaser.Scene {
     callback: () => void,
   ) {
     let bg = this.add
-      .rectangle(x, y, width, 38, 0x444444)
+      .image(x, y, "btn")
+      .setDisplaySize(width, 38)
       .setInteractive({ useHandCursor: true });
     this.add
       .text(x, y - 8, title, {
@@ -273,7 +274,7 @@ export class ShopScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     bg.on("pointerdown", callback);
-    bg.on("pointerover", () => bg.setFillStyle(0x666666));
-    bg.on("pointerout", () => bg.setFillStyle(0x444444));
+    bg.on("pointerover", () => bg.setTint(0xdddddd));
+    bg.on("pointerout", () => bg.clearTint());
   }
 }
